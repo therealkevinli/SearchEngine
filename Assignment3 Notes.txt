@@ -1,0 +1,26 @@
+What is bookkeeping.tsv and bookkeeping.json?
+
+
+IDF
+
+TF_IDF(document,token) 
+
+doc1 = {a,b,c}
+doc2 = {a d e}
+doc3 = {a c g a}
+
+TFIDf is for document ID and token
+	TFIDF(doc1, token = a) = {TF = 1; DF = 3}
+	term frequency of token a in doc 1 is 1
+	document frequency of token a is 3 because it is in 3 documents
+
+
+	IDF = {a:3, c:2, d:1, e:1 etc}
+
+
+
+They will check REST vs rest
+Google does the same
+We might need to re download the clean version
+
+
