@@ -13,10 +13,12 @@ class MyHTMLParser(HTMLParser):
         self.tag_dict = defaultdict(bool)
         self.tag_weights = {"body": 1,"title": 10, "h1": 6,\
                             "h2": 5, "h3": 4, "b": 4, "strong": 4}
-        self.tagStack = []
+        self.tagStack = ['title']
         
     
     def handle_starttag(self, tag, attrs):
+        if len(self.tagStack) > 0 and self.tagStack[0] == 'title':
+            self.tagStack.pop()
         self.tagStack.append(tag)
 
 
@@ -26,7 +28,7 @@ class MyHTMLParser(HTMLParser):
 
 
     def handle_data(self, data):
-        tokens = "".join((char if char.isalnum() else " ") for char in line).split()
+        tokens = "".join((char if char.isalnum() else " ") for char in data).split()
         # Lowercase all tokens
         tokens = [token.lower() for token in tokens]
 

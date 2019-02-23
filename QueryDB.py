@@ -2,6 +2,9 @@ from pymongo import MongoClient
 import math
 import pprint
 import json
+import create_postings_list
+import os
+import sys
 
 # setup connection to mongo and the search engine database
 client = MongoClient() # mongodb://localhost:27017/
@@ -16,6 +19,8 @@ meta_collection = db.metainf
 doc_count = 0
 batch = {}
 
+os.chdir("/home/georgio/workspace/121/search-engine/WEBPAGES_CLEAN")
+json_dict = create_postings_list.json_dict
 def insert_dict(tf_dict, doc_id):
     global doc_count
     global batch
@@ -23,7 +28,7 @@ def insert_dict(tf_dict, doc_id):
     for t, freq in tf_dict.items():
         doc = {
             "DOCID" : doc_id, # "0/0"
-            "TF" : freq,
+            "TF" : freq[0],
             "IDF": 0.0,
             "TFIDF": 0.0
         } 
@@ -58,7 +63,11 @@ def match(seq):
     seen_add = seen.add
     return [x for x in seq if not (x in seen or seen_add(x))]
 
+def kill_collection():
+    index_collection.remove({})
+
 def search_query(query, limit):
+    query = query.lower()
     cond = []
     qtokens = query.split()
     sortBy = "DOCS.TFIDF"
@@ -73,5 +82,11 @@ def search_query(query, limit):
     for e in cond:
         if i >= limit:
             return 
-        print(e)
+        print(json_dict[e])
         i += 1
+def getMeta():
+    # print("# of unique terms: {}".format(len(batch)))
+    # print("Size of index: {}Kb".format(index_collection.(scale=1024)))
+    results = db.command("dbstats")
+    print("Number of unique terms: {}".format(results["objects"]))
+    print("Index size: {}Kb".format(int(results["indexSize"])/1024))
