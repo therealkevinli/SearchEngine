@@ -53,61 +53,25 @@ def send_batch():
     batch_list = list(batch.values())
     id_list = index_collection.insert_many(batch_list)
 
+def match(seq):
+    seen = set()
+    seen_add = seen.add
+    return [x for x in seq if not (x in seen or seen_add(x))]
+
 def search_query(query, limit):
-    cond = set()
+    cond = []
     qtokens = query.split()
     sortBy = "DOCS.TFIDF"
     results = index_collection.find({"_id":{"$in":qtokens}}, {"DOCS.DOCID":1, "DOCS.TFIDF":1}).sort([(sortBy,-1)])
     for term in results:
         for doc in term["DOCS"]:
             # call book keeping
-            cond.add(doc["DOCID"])
-            # make this shit work right, sort it by TFIDF
+            cond.append(doc["DOCID"])
+
+    cond = match(cond)
     i = 0
     for e in cond:
         if i >= limit:
             return 
         print(e)
         i += 1
-
-random1 = {
-    "a" : 4,
-    "b" : 4,
-    "c" : 3,
-    "d" : 2,
-    "e" : 2,
-    "f" : 1,
-}
-
-random2 = {
-    "a" : 5,
-    "b" : 1,
-    "c" : 1,
-    "d" : 2,
-    "f" : 1,
-}
-
-random3 = {
-    "a" : 5,
-    "b" : 1,
-    "c" : 1,
-    "d" : 2,
-    "f" : 1,
-}
-
-#insert_dict(random1, "0/0")
-#insert_dict(random2, "0/1")
-#insert_dict(random3, "0/3")
-#calc_all_tfidf()
-#send_batch()
-l = search_query("a b e", 2)
-
-
-
-# > db.index.find({TERM:'a'}, { TERM:1, DOCS.DOCID:1, DOCS.TFIDF:1})
-
-# index = db.index_collection # used to insert an item in the db
-
-# index_collection.insert_one(post)
-
-# doc = index_collection.find_one({"term": "t"})
