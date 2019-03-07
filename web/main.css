@@ -5,21 +5,22 @@
 .autocomplete-group { padding: 2px 5px; }
 .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
 
-html, body {
+/* html, body {
     height: 100%;
     width: 100%;
     margin: 0;
+} */
+
+.container-center {
+    /* height: 100%; */
+    /* width: 100%; */
+    /* display: flex; */
+    margin: 3rem;
+    /* justify-content: center; */
+    /* align-items: center; */
 }
 
-.container-c {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.autocomplete-searchbox {
+.searchbox {
 	height: 50px;
 	width: 600px;
 }

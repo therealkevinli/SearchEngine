@@ -19,16 +19,35 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     
+    <!-- Ionicons font for icons -->
+    <link href="https://unpkg.com/ionicons@4.5.1/dist/css/ionicons.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="main.css">
     
 </head>
 
-<body>
-    <div class="container-c mb-3">
-        <h1>Zot Search</h1>
-        <input type="text" name="query" id="autocomplete" 
-        class="autocomplete-searchbox form-control" 
-        placeholder="Search"/>
+<body class="container-center">
+    <div class="row">
+        <div class="col-md-2">
+            <h1>Zot Search</h1>
+        </div>
+        <div class="col-md-10">
+            <div class="input-group searchbox">
+                <input id="search" type="text" class="form-control" placeholder="Query" aria-label="Query" aria-describedby="button-search">
+                <div class="input-group-append">
+                    <button class="btn btn-lg btn-outline-success" type="button" id="search-button"><i class="icon ion-ios-search"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dropdown-divider"></div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <table class="mt-3 table table-lg table-borderless">
+                <tbody id="resultsTableBody"></tbody>               
+            </table>
+        </div>
     </div>
 
     <script src="main.js"></script>

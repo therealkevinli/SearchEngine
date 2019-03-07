@@ -67,6 +67,8 @@ def kill_collection():
     index_collection.remove({})
 
 def search_query(query, limit):
+    if len(query) == 0:
+        return []
     query = query.lower()
     cond = []
     qtokens = query.split()
@@ -78,12 +80,15 @@ def search_query(query, limit):
             cond.append(doc["DOCID"])
 
     cond = match(cond)
+    url_list = []
     i = 0
     for e in cond:
         if i >= limit:
-            return 
+            return url_list
         print(json_dict[e])
+        url_list.append(json_dict[e])
         i += 1
+
 def getMeta():
     # print("# of unique terms: {}".format(len(batch)))
     # print("Size of index: {}Kb".format(index_collection.(scale=1024)))
