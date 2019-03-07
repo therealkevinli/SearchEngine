@@ -65,8 +65,9 @@ def match(seq):
 
 def kill_collection():
     index_collection.remove({})
-
-def search_query(query, limit):
+    
+# add new docID dict
+def search_query(query, limit): # add a new func here 
     if len(query) == 0:
         return []
     query = query.lower()
@@ -74,6 +75,7 @@ def search_query(query, limit):
     qtokens = query.split()
     sortBy = "DOCS.TFIDF"
     results = index_collection.find({"_id":{"$in":qtokens}}, {"DOCS.DOCID":1, "DOCS.TFIDF":1}).sort([(sortBy,-1)])
+    # after here!
     for term in results:
         for doc in term["DOCS"]:
             # call book keeping
