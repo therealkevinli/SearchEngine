@@ -6,6 +6,7 @@ import create_postings_list
 import os
 import sys
 import operator
+from nltk.stem import PorterStemmer #for the stemmer
 
 # setup connection to mongo and the search engine database
 client = MongoClient() # mongodb://localhost:27017/
@@ -70,9 +71,11 @@ def kill_collection():
 def search_query(query, limit): # add a new func here 
     if len(query) == 0:
         return []
+    ps = PorterStemmer() #Porter Stemmer object    
     query = query.lower()
     doc_rank = {} # dictionary that will hold document rankings
     qtokens = query.split()
+    qtokens = [ps.stem(token) for token in qtokens] # stems the query tokens
     sortBy = "DOCS.TFIDF"
     results = index_collection.find({"_id":{"$in":qtokens}}, {"DOCS.DOCID":1, "DOCS.TFIDF":1}).sort([(sortBy,-1)])
 
