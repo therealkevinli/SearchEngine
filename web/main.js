@@ -8,7 +8,7 @@ function loadTable(jsonData, query) {
         let rowHTML = "";
         rowHTML += '<tr>';
         rowHTML += '<td>';
-        rowHTML += '<a href="' + jsonData[i] + '">' + jsonData[i] + '</a>';
+        rowHTML += '<a href="https://' + jsonData[i] + '">' + jsonData[i] + '</a>';
         rowHTML += '</td>';
         rowHTML += '</tr>';
         resultsTableBodyElement.append(rowHTML);
