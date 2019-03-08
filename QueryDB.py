@@ -5,6 +5,7 @@ import json
 import create_postings_list
 import os
 import sys
+import operator
 
 # setup connection to mongo and the search engine database
 client = MongoClient() # mongodb://localhost:27017/
@@ -65,31 +66,33 @@ def match(seq):
 
 def kill_collection():
     index_collection.remove({})
-    
-# add new docID dict
+
 def search_query(query, limit): # add a new func here 
     if len(query) == 0:
         return []
     query = query.lower()
-    cond = []
+    doc_rank = {} # dictionary that will hold document rankings
     qtokens = query.split()
     sortBy = "DOCS.TFIDF"
     results = index_collection.find({"_id":{"$in":qtokens}}, {"DOCS.DOCID":1, "DOCS.TFIDF":1}).sort([(sortBy,-1)])
-    # after here!
+
     for term in results:
         for doc in term["DOCS"]:
-            # call book keeping
-            cond.append(doc["DOCID"])
+            doc_id = doc["DOCID"]
+            doc_tfidf = doc["TFIDF"]
 
-    cond = match(cond)
-    url_list = []
-    i = 0
-    for e in cond:
-        if i >= limit:
-            return url_list
-        print(json_dict[e])
-        url_list.append(json_dict[e])
-        i += 1
+            # Stored sum of tfidf in dictionary ranks urls
+            if doc_id in doc_rank:
+                doc_rank[doc_id] += doc_tfidf
+            else:
+                doc_rank[doc_id] = doc_tfidf
+
+    # sort by largest sum
+    url_list = sorted(doc_rank.items(), key=operator.itemgetter(1), reverse=True)
+    # url_list = [(json_dict[url[0]],url[1]) for url in url_list]
+    url_list = [json_dict[url[0]] for url in url_list]
+    pprint.pprint(url_list[:limit])
+    return url_list[:limit]
 
 def getMeta():
     # print("# of unique terms: {}".format(len(batch)))
