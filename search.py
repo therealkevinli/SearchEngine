@@ -14,6 +14,7 @@ def query_the_search():
         query = dataDict['query']
         print( query )
         results = QueryDB.search_query(query, 50)
+        results = [result[0] for result in results]
         return jsonify(results), 200
     except Exception as e:
         return jsonify({'message' : 'error reading query'}), 500
