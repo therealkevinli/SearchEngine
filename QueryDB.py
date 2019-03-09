@@ -9,6 +9,7 @@ import operator
 from nltk.stem import PorterStemmer #for the stemmer
 
 stopwords = {'ourselves', 'hers', 'between', 'yourself', 'but', 'again', 'there', 'about', 'once', 'during', 'out', 'very', 'having', 'with', 'they', 'own', 'an', 'be', 'some', 'for', 'do', 'its', 'yours', 'such', 'into', 'of', 'most', 'itself', 'other', 'off', 'is', 's', 'am', 'or', 'who', 'as', 'from', 'him', 'each', 'the', 'themselves', 'until', 'below', 'are', 'we', 'these', 'your', 'his', 'through', 'don', 'nor', 'me', 'were', 'her', 'more', 'himself', 'this', 'down', 'should', 'our', 'their', 'while', 'above', 'both', 'up', 'to', 'ours', 'had', 'she', 'all', 'no', 'when', 'at', 'any', 'before', 'them', 'same', 'and', 'been', 'have', 'in', 'will', 'on', 'does', 'yourselves', 'then', 'that', 'because', 'what', 'over', 'why', 'so', 'can', 'did', 'not', 'now', 'under', 'he', 'you', 'herself', 'has', 'just', 'where', 'too', 'only', 'myself', 'which', 'those', 'i', 'after', 'few', 'whom', 't', 'being', 'if', 'theirs', 'my', 'against', 'a', 'by', 'doing', 'it', 'how', 'further', 'was', 'here', 'than'}
+champ_thresh = 5.0
 
 # setup connection to mongo and the search engine database
 client = MongoClient() # mongodb://localhost:27017/
@@ -51,12 +52,20 @@ def calc_all_tfidf():
     global batch
     for term, struct in batch.items():
         nterm = len(struct["DOCS"])
+        index = 0
         for doc in struct["DOCS"]:
             tf = doc["TF"]
             idf = math.log(doc_count/nterm)
             tfidf = tf * idf
             doc["IDF"] = idf
             doc["TFIDF"] = tfidf
+
+            # remove values below champions threshold
+            if tfidf < champ_thresh:
+                del batch[term]["DOCS"][index]
+
+            index += 1
+
 
 def send_batch():
     batch_list = list(batch.values())
