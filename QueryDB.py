@@ -24,7 +24,6 @@ meta_collection = db.metainf
 doc_count = 0
 batch = {}
 
-os.chdir("/home/georgio/workspace/121/search-engine/WEBPAGES_CLEAN")
 json_dict = create_postings_list.json_dict
 def insert_dict(tf_dict, doc_id):
     global doc_count

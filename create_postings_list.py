@@ -2,7 +2,7 @@ import json
 import os
 
 returnList = []
-data = open('bookkeeping.json').read()
+data = open('./WEBPAGES_CLEAN/bookkeeping.json').read()
 json_dict = json.loads(data)
 #now json_dict is a dictionary
 # ex: json_data['64/143']

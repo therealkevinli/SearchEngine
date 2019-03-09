@@ -13,7 +13,7 @@ def LoadDB():
     print("Tokenizing files...")
     for doc_id in doc_list:
         parser = html_parser.MyHTMLParser()
-        file = open(doc_id)
+        file = open('./WEBPAGES_CLEAN/' + doc_id)
         for line in file:
             parser.line_num += 1
             feed = parser.feed(line)
@@ -27,8 +27,6 @@ def LoadDB():
 msg = "1 - LOAD DATABASE\n2 - SEARCH\n3 - METADATA\n4 - EXIT\n"
 
 if __name__ == '__main__':
-    os.chdir("/home/georgio/workspace/121/search-engine/WEBPAGES_CLEAN")
-
     while(1):
         us_in = input(msg + "> ")
         if us_in == '1':

@@ -44,18 +44,3 @@ class MyHTMLParser(HTMLParser):
                     freq, weighted_total = self.term_dict[token]
                     self.term_dict[token] = (freq + 1, weighted_total\
                                              + self.tag_weights[tag])
-
-if __name__ == '__main__':
-    os.chdir("C:/Users/Kevin/Documents/CompSci/CS121/Assignment3/")
-
-    parser = MyHTMLParser()
-
-    file = open('tryThis.html')
-
-    for line in file:
-        parser.line_num += 1
-        feed = parser.feed(line)
-
-    print(parser.term_dict)
-    ##parser.feed('<html><head><title>Test</title></head>'
-    ##            '<body><h1>Parse me!</h1></body></html>')
